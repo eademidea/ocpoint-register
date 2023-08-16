@@ -1,0 +1,23 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: "teste"
+    ports:
+      - "5432:5432"
+    networks:
+      - bridge
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+    networks:
+      - bridge
+
+networks: 
+  bridge:
+    driver: bridge
