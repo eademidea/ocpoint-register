@@ -1,0 +1,10 @@
+insert into tb_persons 
+(id, age, creation_date ,document, gender, name) values (default,35, now(), '12345678911', 'M', 'Adrian Junqueira')
+
+
+select * from tb_persons tp 
+
+
+insert into tb_group (creation_date,name) values (now(), 'TI')
+
+select * from tb_group

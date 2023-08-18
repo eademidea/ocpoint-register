@@ -5,13 +5,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import br.com.ocpoint.model.Person;
+import br.com.ocpoint.model.AccessGroup;
 import br.com.ocpoint.model.User;
 
 @Repository
-public interface PersonRepository extends JpaRepository<User, Integer> {
+public interface GroupRepository extends JpaRepository<User, Integer> {
 
-    @Query(value = "SELECT p FROM Person p where p.document = :document")
-    public Person getPersonByDocument(@Param("document") String document);
+    @Query( value = "SELECT g FROM AccessGroup g where g.id = :id")
+    public AccessGroup getGroupById(@Param("id") Integer id);
 
 }

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.ocpoint.model.User;
 import br.com.ocpoint.model.request.UserRequest;
 import br.com.ocpoint.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,9 +34,8 @@ public class UserController {
     @Operation(description = "Endpoint de cadastro de usuários..")
     @ApiResponse(responseCode = "200", description = "Usuário criado com sucesso...")
     @PostMapping("/sign-up")
-    public ResponseEntity<String> signup(@RequestBody @Valid UserRequest userRequest) {
-
-        return ResponseEntity.ok("service.teste()");
+    public ResponseEntity<User> signup(@RequestBody @Valid UserRequest userRequest) {
+        return ResponseEntity.ok(service.createUser(userRequest));
     }
 
 }
