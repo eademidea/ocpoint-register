@@ -27,7 +27,7 @@ public class User {
     private Integer id;
 
     @Column(name = "USER_NAME", unique = true)
-    private String user;
+    private String username;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "GROUP_ID", referencedColumnName = "id")

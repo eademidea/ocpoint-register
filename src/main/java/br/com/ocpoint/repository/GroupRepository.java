@@ -11,7 +11,7 @@ import br.com.ocpoint.model.User;
 @Repository
 public interface GroupRepository extends JpaRepository<User, Integer> {
 
-    @Query( value = "SELECT g FROM AccessGroup g where g.id = :id")
+    @Query(value = "SELECT g FROM AccessGroup g where g.id = :id")
     public AccessGroup getGroupById(@Param("id") Integer id);
 
 }

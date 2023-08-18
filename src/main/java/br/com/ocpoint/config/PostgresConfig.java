@@ -7,7 +7,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Configuration
+@Slf4j
 public class PostgresConfig {
 
     @Value("${spring.datasource.url}")
@@ -29,6 +32,7 @@ public class PostgresConfig {
         dataSource.setUrl(this.url);
         dataSource.setUsername(this.username);
         dataSource.setPassword(this.password);
+        log.info("Iniciando banco de dados ... {}", this.url);
         return dataSource;
     }
 
