@@ -11,6 +11,6 @@ para iniciar o projeto é necessário:
 2º executar o mvn clean install
 3º Iniciar projeto.
 
-É possível acessar a documentação do projeto no seguinte link:
+É possível acessar a documentação do projeto no seguinte endereço:
 
-
+http://localhost:{PORTA}/swagger-ui/index.html
