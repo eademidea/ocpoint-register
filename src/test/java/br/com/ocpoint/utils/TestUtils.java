@@ -4,7 +4,9 @@ import java.time.LocalDateTime;
 
 import br.com.ocpoint.model.AccessGroup;
 import br.com.ocpoint.model.Person;
+import br.com.ocpoint.model.User;
 import br.com.ocpoint.model.request.UserRequest;
+import br.com.ocpoint.model.response.UserResponse;
 
 public class TestUtils {
     public UserRequest getUserRequest() {
@@ -34,5 +36,19 @@ public class TestUtils {
         response.setName("Teste");
         response.setUpdateDate(null);
         return response;
+    }
+
+    public User getUser(){
+        var response = User.builder()
+        .creationDate(LocalDateTime.now())
+        .password("1234512")
+        .person(getPerson())
+        .group(getAccessGroup())
+        .build();
+        return response;
+    }
+
+    public UserResponse getUserResponse() {
+        return new UserResponse(getUser());
     }
 }
