@@ -42,7 +42,7 @@ public class UserServiceImplTest extends TestUtils {
         when(userRepository.save(any())).thenReturn(User.builder()
             .creationDate(LocalDateTime.now())
             .password("1234512")
-            .username("Teste")
+            .nameuser("Teste")
             .person(getPerson())
             .group(getAccessGroup())
         .build());

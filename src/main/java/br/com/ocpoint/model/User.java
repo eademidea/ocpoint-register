@@ -27,7 +27,7 @@ public class User {
     private Integer id;
 
     @Column(name = "USER_NAME", unique = true)
-    private String username;
+    private String nameuser;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "GROUP_ID", referencedColumnName = "id")
@@ -47,4 +47,5 @@ public class User {
     @Column(name = "UPDATE_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime updateDate;
+
 }

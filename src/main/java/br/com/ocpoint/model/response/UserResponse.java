@@ -9,7 +9,7 @@ public class UserResponse {
     public UserResponse(User createdUser) {
         this.setId(createdUser.getId());
         this.setName(createdUser.getPerson().getName());
-        this.setUser(createdUser.getUsername());
+        this.setUser(createdUser.getNameuser());
         this.setGroup(createdUser.getGroup().getName());
     }
 

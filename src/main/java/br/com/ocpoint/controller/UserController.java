@@ -1,14 +1,18 @@
 package br.com.ocpoint.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.ocpoint.model.User;
+import br.com.ocpoint.model.request.LoginRequest;
 import br.com.ocpoint.model.request.UserRequest;
 import br.com.ocpoint.model.response.UserResponse;
+import br.com.ocpoint.service.TokenService;
 import br.com.ocpoint.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -20,17 +24,26 @@ import jakarta.validation.Valid;
 public class UserController {
 
     private UserService service;
+    private TokenService tokenService;
+    private AuthenticationManager authenticationManager;
 
-    public UserController(UserService service) {
+    public UserController(UserService service, TokenService tokenService, AuthenticationManager authenticationManager) {
         this.service = service;
+        this.tokenService = tokenService;
+        this.authenticationManager = authenticationManager;
     }
 
     @Operation(description = "Endpoint de login dos usuários..")
     @ApiResponse(responseCode = "200", description = "Usuário logado com sucesso...")
     @GetMapping("/sign-in")
-    public ResponseEntity<String> signin(@RequestHeader String userName, @RequestHeader String password) {
-        service.login(userName, password);
-        return ResponseEntity.ok("service.teste()");
+    public ResponseEntity<String> signin(@RequestBody @Valid LoginRequest login) {
+        var userPassword = new UsernamePasswordAuthenticationToken(login.userName(), login.password());
+        var auth = this.authenticationManager.authenticate(userPassword);
+
+        var token = tokenService.generateToken((User) auth.getPrincipal());
+
+        service.login(login.userName(), login.password());
+        return ResponseEntity.ok(token);
     }
 
     @Operation(description = "Endpoint de cadastro de usuários..")
