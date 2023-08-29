@@ -1,11 +1,12 @@
 package br.com.ocpoint.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ocpoint.model.User;
@@ -19,30 +20,28 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
-@RestController("/v1/users")
 @Tag(name = "UserController", description = "Gerenciamento de usuários...")
+@RestController
+@RequestMapping("users")
 public class UserController {
 
+    @Autowired
     private UserService service;
-    private TokenService tokenService;
-    private AuthenticationManager authenticationManager;
 
-    public UserController(UserService service, TokenService tokenService, AuthenticationManager authenticationManager) {
-        this.service = service;
-        this.tokenService = tokenService;
-        this.authenticationManager = authenticationManager;
-    }
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private TokenService tokenService;
 
     @Operation(description = "Endpoint de login dos usuários..")
     @ApiResponse(responseCode = "200", description = "Usuário logado com sucesso...")
-    @GetMapping("/sign-in")
+    @PostMapping("/sign-in")
     public ResponseEntity<String> signin(@RequestBody @Valid LoginRequest login) {
-        var userPassword = new UsernamePasswordAuthenticationToken(login.userName(), login.password());
-        var auth = this.authenticationManager.authenticate(userPassword);
+        var usernamePassword = new UsernamePasswordAuthenticationToken(login.userName(), login.password());
+        var auth = this.authenticationManager.authenticate(usernamePassword);
 
         var token = tokenService.generateToken((User) auth.getPrincipal());
 
-        service.login(login.userName(), login.password());
         return ResponseEntity.ok(token);
     }
 
@@ -51,6 +50,14 @@ public class UserController {
     @PostMapping("/sign-up")
     public ResponseEntity<UserResponse> signup(@RequestBody @Valid UserRequest userRequest) {
         return ResponseEntity.ok(service.createUser(userRequest));
+    }
+
+    @Operation(description = "Endpoint de login dos usuários..")
+    @ApiResponse(responseCode = "200", description = "Usuário logado com sucesso...")
+    @PostMapping("/teste")
+    public ResponseEntity<String> teste() {
+
+        return ResponseEntity.ok("teste");
     }
 
 }

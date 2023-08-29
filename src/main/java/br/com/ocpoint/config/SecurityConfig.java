@@ -3,6 +3,7 @@ package br.com.ocpoint.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,8 +20,6 @@ import br.com.ocpoint.security.SecurityFilter;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private static final String[] PUBLIC_MATCHERS = { "/v1/users/**" };
-
     @Autowired
     SecurityFilter securityFilter;
 
@@ -30,9 +29,14 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.POST, "/users/sign-in").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/users/sign-up").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**").permitAll()
+
+                        
+                        
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-
                 .build();
     }
 

@@ -12,7 +12,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
-import br.com.ocpoint.exception.TechnicalException;
 import br.com.ocpoint.model.User;
 
 @Service
@@ -21,20 +20,21 @@ public class TokenService {
     @Value("${api.security.token.secret}")
     private String secret;
 
-    public String generateToken(User user) {
-        try {
+    public String generateToken(User user){
+        try{
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            return JWT.create()
+            String token = JWT.create()
                     .withIssuer("auth-api")
                     .withSubject(user.getNameuser())
-                    .withExpiresAt(getExpirationDate())
+                    .withExpiresAt(genExpirationDate())
                     .sign(algorithm);
-        } catch (JWTCreationException e) {
-            throw new TechnicalException("Erro ao gerar token ... " + e.getMessage());
+            return token;
+        } catch (JWTCreationException exception) {
+            throw new RuntimeException("Error while generating token", exception);
         }
     }
 
-    public String validateToken(String token) {
+    public String validateToken(String token){
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
@@ -42,12 +42,12 @@ public class TokenService {
                     .build()
                     .verify(token)
                     .getSubject();
-        } catch (JWTVerificationException e) {
+        } catch (JWTVerificationException exception){
             return "";
         }
     }
 
-    private Instant getExpirationDate() {
+    private Instant genExpirationDate(){
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
 

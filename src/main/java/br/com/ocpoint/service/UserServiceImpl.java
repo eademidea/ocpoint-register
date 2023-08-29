@@ -11,6 +11,7 @@ import br.com.ocpoint.exception.TechnicalException;
 import br.com.ocpoint.model.AccessGroup;
 import br.com.ocpoint.model.Person;
 import br.com.ocpoint.model.User;
+import br.com.ocpoint.model.User.UserRole;
 import br.com.ocpoint.model.request.UserRequest;
 import br.com.ocpoint.model.response.UserResponse;
 import br.com.ocpoint.repository.UserRepository;
@@ -48,10 +49,6 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    @Override
-    public User getUserByUsername(String nameUser) {
-        return userRepository.findByNameuser(nameUser);
-    }
 
     /* Criar método que retorna os parametros de conexão. */
     @Override
@@ -83,6 +80,7 @@ public class UserServiceImpl implements UserService {
                 .nameuser(userRequest.getUser())
                 .person(person)
                 .group(group)
+                .role(UserRole.ADMIN)
                 .creationDate(LocalDateTime.now())
                 .build();
     }
