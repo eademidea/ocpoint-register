@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com</groupId>
-	<artifactId>ocpoint-user-ms</artifactId>
+	<artifactId>ocpoint-register</artifactId>
 	<version>1.0.1</version>
-	<name>ocpoint</name>
+	<name>ocpoint-register</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>20</java.version>
