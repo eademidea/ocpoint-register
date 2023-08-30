@@ -1,6 +1,5 @@
 package br.com.ocpoint.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.ocpoint.model.User;
 import br.com.ocpoint.model.request.LoginRequest;
 import br.com.ocpoint.model.request.UserRequest;
+import br.com.ocpoint.model.response.TokenResponse;
 import br.com.ocpoint.model.response.UserResponse;
 import br.com.ocpoint.service.TokenService;
 import br.com.ocpoint.service.UserService;
@@ -25,18 +25,20 @@ import jakarta.validation.Valid;
 @RequestMapping("users")
 public class UserController {
 
-    @Autowired
     private UserService service;
-
-    @Autowired
     private AuthenticationManager authenticationManager;
-    @Autowired
     private TokenService tokenService;
+
+    public UserController(UserService service, AuthenticationManager authenticationManager, TokenService tokenService) {
+        this.service = service;
+        this.authenticationManager = authenticationManager;
+        this.tokenService = tokenService;
+    }
 
     @Operation(description = "Endpoint de login dos usuários..")
     @ApiResponse(responseCode = "200", description = "Usuário logado com sucesso...")
     @PostMapping("/sign-in")
-    public ResponseEntity<String> signin(@RequestBody @Valid LoginRequest login) {
+    public ResponseEntity<TokenResponse> signin(@RequestBody @Valid LoginRequest login) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(login.userName(), login.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 

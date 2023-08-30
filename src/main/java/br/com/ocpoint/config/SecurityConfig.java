@@ -1,6 +1,5 @@
 package br.com.ocpoint.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -20,8 +19,11 @@ import br.com.ocpoint.security.SecurityFilter;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
     SecurityFilter securityFilter;
+
+    public SecurityConfig(SecurityFilter securityFilter) {
+        this.securityFilter = securityFilter;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -29,12 +31,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/users/sign-in").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/users/sign-up").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**").permitAll()
-
-                        
-                        
+                        .requestMatchers(HttpMethod.POST, "/users/sign-in", "/users/sign-up").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/swagger-resources/*", " /api/swagger-ui/**",
+                                "/api-docs/**")
+                        .permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
