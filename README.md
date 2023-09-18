@@ -1,7 +1,7 @@
 
 # ocpoint
 
-ocpoint é uma ferramenta de controle de ponto eletrônico.
+ocpoint é uma ferramenta de ocorrências de justificativa de ponto eletrônico.
 
 Este é um microserviço, seu objetivo é fornecer endpoint para criação de usuário e login.
 
